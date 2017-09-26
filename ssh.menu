@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# initialisasi var
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
+MYIP2="s/xxxxxxxxx/$MYIP/g";
+
+echo
+
+	#MYIP=$(ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1)
+	#if [ "$MYIP" = "" ]; then
+		#MYIP=$(wget -qO- ipv4.icanhazip.com)
+	#fi
+lolcat -F 0.3 -S 0 /usr/bin/bannermenu
+echo "                       Server: $MYIP" | lolcat
+date +"                        %A, %d-%m-%Y" | lolcat
+date +"                           %H:%M:%S %Z" | lolcat
+echo ""
+echo ""
+echo -e "Default \e[101mLight red"                    EASY MENU 
+";PS3='Select an option [ 1 - 12 ] Then Press ENTER: '
+wget https://raw.githubusercontent.com/aabell3/newdeb/master/script/menu
+wget https://raw.githubusercontent.com/aabell3/newdeb/master/script/user-list
+wget https://raw.githubusercontent.com/aabell3/newdeb/master/script/monssh
+wget https://raw.githubusercontent.com/aabell3/newdeb/master/script/status
+wget https://raw.githubusercontent.com/aabell3/ngaco/master/null/speedtest_cli.py
+wget https://raw.githubusercontent.com/aabell3/ngaco/master/freak/user-expired.sh
+wget https://raw.github.com/yurisshOS/debian7os/master/autokill.sh
+wget https://raw.githubusercontent.com/yurisshOS/debian7os/master/userlimit.sh
+echo "0 0 * * * root /usr/bin/reboot" > /etc/cron.d/reboot
+echo "0 0 * * * root /root/user-expired.sh" > /etc/cron.d/user-expired.sh
+echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
+echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
+sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
+mv menu /usr/local/bin/
+mv user-list /usr/local/bin/
+mv monssh /usr/local/bin/
+mv status /usr/local/bin/
+mv speedtest_cli.py /usr/local/bin/
+chmod +x user-expired.sh
+chmod +x userlimit.sh
+chmod +x autokill.sh
+chmod +x  /usr/local/bin/menu
+chmod +x  /usr/local/bin/user-list
+chmod +x  /usr/local/bin/monssh
+chmod +x  /usr/local/bin/status
+chmod +x  /usr/local/bin/speedtest_cli.py
+cd
+
+#ssh
+sed -i 's/#Banner/Banner/g' /etc/ssh/sshd_config
+sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
+wget -O /etc/issue.net "https://raw.githubusercontent.com/aabell3/newdeb/master/script/banner"
+#bonus block torrent
+wget https://raw.githubusercontent.com/zero9911/script/master/script/torrent.sh
+chmod +x  torrent.sh
+./torrent.sh
